@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Chilanka&family=Nanum+Pen+Script&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Chilanka', cursive;
+}
