@@ -1,13 +1,33 @@
-const Hero = () => {
+import { useState } from 'react';
+import Data from './Data';
+import { GitHubResponse } from '../type';
+
+type Props = {
+  getRepoSize: (repoURL: string) => void;
+  data: GitHubResponse | undefined;
+  error: string;
+};
+
+const Hero = ({ data, getRepoSize, error }: Props) => {
+  const [repoURL, setRepoURL] = useState<string>('');
+
+  const handleClick = () => {
+    getRepoSize(repoURL);
+  };
+
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.code.toLowerCase() === 'enter') {
+      getRepoSize(repoURL);
+    }
+  });
+
   return (
     <div>
-      <div className='absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]'></div>
-
       <section className='relative pt-12 overflow-hidden'>
         <div className='px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl'>
-          <div className='grid items-center grid-cols-1 gap-y-12 lg:grid-cols-2 gap-x-16'>
+          <div className='grid grid-cols-1 gap-y-12 lg:grid-cols-2 gap-x-16'>
             <div>
-              <h1 className='text-4xl text-white lg:text-5xl xl:text-6xl lg:mt-12'>
+              <h1 className='text-4xl text-white lg:text-5xl xl:text-6xl lg:mt-16'>
                 The Git Bit Counter
               </h1>
               <p className='mt-4 text-lg font-normal text-gray-400 sm:mt-8'>
@@ -22,7 +42,8 @@ const Hero = () => {
                     <input
                       type='email'
                       placeholder='github repo link'
-                      className='block w-full py-4 pr-6 text-white placeholder-gray-500 bg-black border border-transparent rounded-full pl-7 sm:py-5 focus:border-transparent focus:ring-0'
+                      className='block w-full py-4 pr-6 text-white placeholder-gray-500 bg-black border border-transparent rounded-full pl-7 sm:py-5 focus:border-transparent focus:ring-0 outline-none'
+                      onChange={(e) => setRepoURL(e.target.value)}
                     />
                   </div>
                 </div>
@@ -30,8 +51,9 @@ const Hero = () => {
                   <button
                     type='submit'
                     className='inline-flex items-center justify-center w-full px-5 py-5 text-sm font-semibold tracking-widest text-black uppercase transition-all duration-200 bg-white rounded-full sm:w-auto sm:py-3 hover:opacity-90'
+                    onClick={() => handleClick()}
                   >
-                    Check Size
+                    Check Repo
                   </button>
                 </div>
               </div>
@@ -40,7 +62,12 @@ const Hero = () => {
             </div>
 
             <div className='relative'>
-              <p className='text-white'>hey</p>
+              {error ? (
+                <div className='bg-gray-800 border border-gray-800 shadow-lg rounded-2xl px-4 py-12 lg:mt-32'>
+                  <p className='text-white text-2xl text-center'>{error} :)</p>
+                </div>
+              ) : null}
+              {data && !error ? <Data data={data} /> : null}
             </div>
           </div>
         </div>

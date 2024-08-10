@@ -4,6 +4,33 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .btn {
+    @apply bg-green-700 hover:bg-green-600 px-5 py-2 text-xs shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-green-600 hover:border-green-400 text-white rounded-full transition ease-in;
+  }
+  .box {
+    @apply flex flex-col p-4 bg-gray-800 border-gray-800 shadow-md hover:shadow-lg rounded-2xl;
+  }
+  .box-2 {
+    @apply p-4 relative  bg-gray-800 border border-gray-800 shadow-lg  rounded-2xl;
+  }
+  .ping-animation {
+    @apply animate-ping absolute w-12 h-12 inline-flex border-2 rounded-2xl border-green-400 opacity-75;
+  }
+}
+
 body {
   font-family: 'Chilanka', cursive;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  z-index: -2;
+  width: 100vw;
+  --tw-bg-opacity: 1;
+  background-color: rgb(10 10 10 / var(--tw-bg-opacity)) /* #0a0a0a */;
+  background-image: radial-gradient(
+    ellipse 80% 80% at 50% -20%,
+    rgba(120, 119, 198, 0.3),
+    rgba(255, 255, 255, 0)
+  );
 }
