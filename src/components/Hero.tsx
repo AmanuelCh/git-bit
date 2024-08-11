@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Data from './Data';
 import { GitHubResponse } from '../type';
 
@@ -13,13 +13,25 @@ const Hero = ({ data, getRepoSize, error }: Props) => {
 
   const handleClick = () => {
     getRepoSize(repoURL);
+    setRepoURL('');
   };
 
-  document.addEventListener('keydown', (e: KeyboardEvent) => {
-    if (e.code.toLowerCase() === 'enter') {
-      getRepoSize(repoURL);
-    }
-  });
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        getRepoSize(repoURL);
+        setRepoURL('');
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [repoURL]);
 
   return (
     <div>
@@ -43,6 +55,7 @@ const Hero = ({ data, getRepoSize, error }: Props) => {
                       type='email'
                       placeholder='github repo link'
                       className='block w-full py-4 pr-6 text-white placeholder-gray-500 bg-black border border-transparent rounded-full pl-7 sm:py-5 focus:border-transparent focus:ring-0 outline-none'
+                      value={repoURL}
                       onChange={(e) => setRepoURL(e.target.value)}
                     />
                   </div>

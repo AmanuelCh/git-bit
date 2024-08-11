@@ -1,3 +1,7 @@
+import { toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+
 import { GitHubResponse } from '../type';
 import starSVG from './starSVG.svg';
 
@@ -10,6 +14,15 @@ const Data = ({ data }: Props) => {
     if (size >= 800 && size < 800000) return (size / 1024).toFixed(2);
     if (size >= 800000) return (size / 1048576).toFixed(2);
     return size;
+  };
+
+  const copyToClipboard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast.success('Copied to clipboard!', { autoClose: 2000 });
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+    }
   };
 
   return (
@@ -50,7 +63,7 @@ const Data = ({ data }: Props) => {
                     </p>
 
                     <a
-                      href='#'
+                      href={`https://github.com/${data.full_name}/archive/refs/heads/${data.default_branch}.zip`}
                       target='_blank'
                       className='btn'
                     >
@@ -102,9 +115,9 @@ const Data = ({ data }: Props) => {
                   <i className='fab fa-behance text-xl text-gray-400'></i>
                 </div>
                 <div className='text-2xl text-gray-100 font-medium leading-8 mt-5'>
-                  {data.watchers_count}
+                  {data.open_issues}
                 </div>
-                <div className='text-sm text-gray-500'>Watchers</div>
+                <div className='text-sm text-gray-500'>Issues</div>
               </div>
             </div>
             <div className='col-span-12 sm:col-span-4'>
@@ -116,9 +129,9 @@ const Data = ({ data }: Props) => {
                   fill='currentColor'
                 >
                   <path
-                    fill-rule='evenodd'
+                    fillRule='evenodd'
                     d='M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 101.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 8.707 8.293a1 1 0 00-1.414 0l-2 2a1 1 0 101.414 1.414L8 10.414l1.293 1.293a1 1 0 001.414 0l4-4z'
-                    clip-rule='evenodd'
+                    clipRule='evenodd'
                   />
                 </svg>
                 <div className='flex justify-between items-center '>
@@ -135,11 +148,14 @@ const Data = ({ data }: Props) => {
             <div className='flex flex-col py-4 relative bg-gray-800 border border-gray-800 shadow-lg rounded-2xl'>
               <div>
                 <div className='flex flex-col justify-center px-6 lg:px-4'>
-                  <div className='py-4'>
-                    <img
-                      src={data.owner.avatar_url}
-                      alt='avatar url'
-                    />
+                  <div className='w-full flex justify-center'>
+                    <div className='py-4 w-40'>
+                      <img
+                        src={data.owner.avatar_url}
+                        className='rounded-full border-green-600'
+                        alt='avatar url'
+                      />
+                    </div>
                   </div>
                   <p className='text-sm text-gray-500 mb-1'>
                     Repo:{' '}
@@ -173,7 +189,12 @@ const Data = ({ data }: Props) => {
                   </p>
                 </div>
                 <div className='p-3 mt-2 text-center space-x-4 md:block'>
-                  <button className='btn'>Clone repo</button>
+                  <button
+                    className='btn'
+                    onClick={() => copyToClipboard(data.clone_url)}
+                  >
+                    Clone repo
+                  </button>
                 </div>
               </div>
             </div>
@@ -182,7 +203,7 @@ const Data = ({ data }: Props) => {
                 <div className='flex items-center justify-between'>
                   <div className='flex items-center mr-auto'>
                     <div className='flex flex-col ml-3 gap-1'>
-                      <div className='font-medium leading-none text-gray-100'>
+                      <div className='font-medium text-gray-100'>
                         {new Date(data.created_at).toUTCString()}
                       </div>
                       <p className='text-sm text-gray-500 leading-none mt-1'>
@@ -196,7 +217,7 @@ const Data = ({ data }: Props) => {
                 <div className='flex items-center justify-between'>
                   <div className='flex items-center mr-auto'>
                     <div className='flex flex-col ml-3 min-w-0 gap-1'>
-                      <div className='font-medium leading-none text-gray-100'>
+                      <div className='font-medium text-gray-100'>
                         {new Date(data.updated_at).toUTCString()}
                       </div>
                       <p className='text-sm text-gray-500 leading-none mt-1 truncate'>
@@ -225,10 +246,10 @@ const Data = ({ data }: Props) => {
                   <div className='flex items-center mr-auto'>
                     <div className='flex flex-col ml-3 min-w-0 gap-1'>
                       <div className='font-medium leading-none text-gray-100'>
-                        {data.open_issues}
+                        {data.watchers_count}
                       </div>
                       <p className='text-sm text-gray-500 leading-none mt-1 truncate'>
-                        Open issues
+                        Watchers
                       </p>
                     </div>
                   </div>
@@ -255,7 +276,7 @@ const Data = ({ data }: Props) => {
                   <div className='flex justify-between items-center '>
                     <div className='flex flex-col'>
                       <h2 className='font-medium leading-none text-gray-100'>
-                        {data.license.name}
+                        {data?.license?.name ? data.license.name : 'No license'}
                       </h2>
                     </div>
                   </div>

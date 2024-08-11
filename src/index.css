@@ -14,9 +14,6 @@
   .box-2 {
     @apply p-4 relative  bg-gray-800 border border-gray-800 shadow-lg  rounded-2xl;
   }
-  .ping-animation {
-    @apply animate-ping absolute w-12 h-12 inline-flex border-2 rounded-2xl border-green-400 opacity-75;
-  }
 }
 
 body {
