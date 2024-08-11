@@ -289,11 +289,6 @@ const Data = ({ data }: Props) => {
               </div>
             </div>
           </div>
-          <div className='flex flex-col'>
-            <div className='lg:w-3/5 p-4 bg-gray-800 border-gray-800 shadow-md hover:shadow-lg rounded-2xl'>
-              hey
-            </div>
-          </div>
         </div>
       </div>
     </div>

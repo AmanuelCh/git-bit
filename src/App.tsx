@@ -5,6 +5,7 @@ import { GitHubResponse } from './type';
 
 function App() {
   const [data, setData] = useState<GitHubResponse>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
   const token = import.meta.env.VITE_GITHUB_ACCESS_TOKEN;
@@ -23,10 +24,13 @@ function App() {
     try {
       const repoData = await fetchRepoData(owner, repo);
       setData(repoData);
+      setIsLoading(false);
     } catch (err: any) {
       setError(
         err.message || 'An error occurred while fetching the repository data.'
       );
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -37,6 +41,8 @@ function App() {
   }
 
   async function fetchRepoData(owner: string, repo: string) {
+    setIsLoading(true);
+
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}`,
       {
@@ -47,6 +53,7 @@ function App() {
     );
 
     if (!response.ok) {
+      setIsLoading(false);
       const errorData = await response.json(); // Get error details from response
       throw new Error(errorData.message || 'Failed to fetch repository data');
     }
@@ -61,6 +68,7 @@ function App() {
         data={data}
         getRepoSize={getRepoSize}
         error={error}
+        isLoading={isLoading}
       />
       <ToastContainer limit={1} />
     </>
