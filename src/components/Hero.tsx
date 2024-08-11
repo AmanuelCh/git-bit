@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Data from './Data';
 import { GitHubResponse } from '../type';
+import Loader from './Loader';
 
 type Props = {
   getRepoSize: (repoURL: string) => void;
@@ -82,8 +83,11 @@ const Hero = ({ data, getRepoSize, error, isLoading }: Props) => {
                 </div>
               ) : null}
               {isLoading ? (
-                <div className='bg-gray-800 border border-gray-800 shadow-lg rounded-2xl px-4 py-12 lg:mt-32'>
-                  <p className='text-white text-2xl text-center'>Loading...</p>
+                <div className='flex flex-col items-center justify-center gap-4 shadow-lg rounded-2xl px-4 py-12 lg:mt-32'>
+                  <Loader />
+                  <p className='text-white text-2xl text-center mt-8'>
+                    Loading...
+                  </p>
                 </div>
               ) : null}
               {data && !error ? <Data data={data} /> : null}
