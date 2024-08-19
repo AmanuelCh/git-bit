@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import Hero from './components/Hero';
+import { Helmet } from 'react-helmet-async';
 import { GitHubResponse } from './type';
 
 function App() {
@@ -63,6 +64,29 @@ function App() {
 
   return (
     <>
+      <Helmet>
+        <title>Git Bit</title>
+        <meta
+          name='description'
+          content='Repo size checker. Get byte-sized info for your GitHub repo.'
+        />
+        <meta
+          property='og:title'
+          content='Git Bit'
+        />
+        <meta
+          property='og:description'
+          content='Get byte-sized info for your GitHub repo.'
+        />
+        <meta
+          property='og:image'
+          content='https://unsplash.com/photos/blue-and-black-penguin-plush-toy-UT8LMo-wlyk'
+        />
+        <meta
+          property='og:url'
+          content='https://git-bit.netlify.app/'
+        />
+      </Helmet>
       <div className='absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]'></div>
       <Hero
         data={data}
